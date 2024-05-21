@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include <stdlib.h>
+#define ABS(y) (y)<(0) ? ((-1)*(y)) : (y)
 #define MAXN 20
 
 int s[MAXN + 1][MAXN + 1];
 int n;
-int sol = 1000;
+int sol = 1e9;
 int visited[MAXN + 1];
 
 void inputData(void)
@@ -30,11 +30,12 @@ int cal_score(void)
 			if (!visited[i] && !visited[j]) link += s[i][j];
 		}
 	}
-	return (int)(abs(start - link));
+	return ABS(start - link);
 }
 
 void dfs(int cnt, int idx)
 {
+    if (sol == 0) return;
 	if (cnt >= 1 && cnt <= n / 2)
 	{
 		int diff = cal_score();
@@ -43,8 +44,9 @@ void dfs(int cnt, int idx)
 
 	for (int i = idx; i <= n; i++)
 	{
+        if (visited[i]) continue;
 		visited[i] = 1;
-		dfs(cnt + 1, idx + 1);
+		dfs(cnt + 1, i + 1);
 		visited[i] = 0;
 	}
 }
