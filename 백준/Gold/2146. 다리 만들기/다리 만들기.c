@@ -1,7 +1,5 @@
 #include <stdio.h>
-#include <string.h>
 #define MAXN 100
-
 int n;
 int maps[MAXN + 10][MAXN + 10];
 int visited[MAXN + 10][MAXN + 10];
@@ -115,7 +113,7 @@ int solution(void) {
 int main(void) {
     inputData();
     int sol = solution();
-    // print_maps();
+   // print_maps();
     printf("%d\n", sol);
     return 0;
 }
