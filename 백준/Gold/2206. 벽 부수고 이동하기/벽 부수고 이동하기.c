@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 #define MAX 1000
 int n, m;
 char maps[MAX + 1][MAX + 1];
@@ -8,7 +7,7 @@ typedef struct
 {
 	int y, x, c;
 } QUEUE;
-QUEUE q[(MAX + 1) * (MAX * 1) * 2];
+QUEUE q[MAX * MAX * 2];
 int wp, rp;
 void push(int y, int x, int c){ q[wp].y = y; q[wp].x = x; q[wp++].c = c; }
 QUEUE pop(void) { return q[rp++]; }
