@@ -23,19 +23,23 @@ void inputData(void)
 	}
 }
 
+void debugnode(void)
+{
+	for (int i = 1; i <= n; i++) printf(" (%d,%d) ->", i, nodes[i]);
+	printf("END\n");
+}
+
 int check_nodes(void)
 {
 	for (int i = 1; i <= n; i++)
 	{
 		if (!nodes[i]) return 0;
 	}
-	for (int i = 1; i <= n; i++) printf("%d ", nodes[i]);
-	printf("\n");
+	debugnode();
 	return 1;
 }
 
-
-void dfs(int cnt, int cur, int weight) // y, x 좌표를 모두 받아와야 되는가?
+void dfs(int cur, int weight) // y, x 좌표를 모두 받아와야 되는가?
 {
 	if (cur == start && check_nodes())
 	{
@@ -43,17 +47,17 @@ void dfs(int cnt, int cur, int weight) // y, x 좌표를 모두 받아와야 되
 		if (sol > weight) sol = weight;
 		return;
 	}
-
+	// 현재 방문했더 ㄴ노드를 그대로 방문하고 있음. 확인 필요
 	for (int i = cur; i <= n; i++)
 	{
 		if (nodes[i]) continue;
-		nodes[i] = 1;
 		for (int next = 1; next <= n; next++)
 		{
 			if (i == next) continue; // 가지치기인데 뭐 0이라 밑에서도 처리되긴함
 			if (!w[i][next] || visited[i][next]) continue;
+			nodes[i] = next;
 			visited[i][next] += w[i][next];
-			dfs(cnt + 1, next, visited[i][next]);
+			dfs(next, visited[i][next]);
 			visited[i][next] -= w[i][next];
 		}
 	}
@@ -76,10 +80,11 @@ int main(void)
 	for (int i = 1; i <= n; i++)
 	{
 		start = i;
-		dfs(0, i, 0);
+		dfs(i, 0);
 		memset(visited, 0, sizeof(visited));
 		memset(nodes, 0, sizeof(nodes));
 	}
+	debugnode();
 	printf("%d\n", sol);
 	return 0;
 }
