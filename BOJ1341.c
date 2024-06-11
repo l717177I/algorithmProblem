@@ -39,7 +39,7 @@ void dfs(int cnt)
 	{
 		if (lucky() && isTrue())
 		{
-			debug();
+			//debug();
 			strcpy(comp[wp++], str);
 			sol++;
 		}
@@ -60,8 +60,8 @@ int main(void)
 {
 	scanf("%s", s);
 	len = strlen(s);
-	for (int i = 0; i < len; i++) printf("%c", s[i]);
-	printf(", len = %d\n", len);
+	//for (int i = 0; i < len; i++) printf("%c", s[i]);
+	//printf(", len = %d\n", len);
 	dfs(0);
 	printf("%d\n", sol);
 	return 0;
