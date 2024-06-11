@@ -1,6 +1,6 @@
 #include <stdio.h>
 #define MAX 50
-// 연구소는 빈칸0, 벽1, 바이러스2
+// 연구소는 빈칸0, 벽1, 바이러스2    ㅂ
 // 활성이가 비활성 있는 칸으로 가면 비활성이 활성으로 변함
 int n, m;
 int lab[MAX + 2][MAX + 2];
@@ -37,14 +37,6 @@ void inputData(void)
 	}
 }
 
-void clearVar(void)
-{
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++) visited[i][j] = -1;
-	}
-}
-
 void spread_bfs(void) // 병균 퍼뜨리기
 {
 	int infect = 0;
@@ -78,7 +70,7 @@ void select_dfs(int cnt, int start)	// 바이러스 선택 (조합)
 	if (cnt == m)
 	{
 		wp = rp = 0;	// que clear
-		clearVar();		// visited clear
+		memset(visited, -1, sizeof(visited));
 		for (int i = 0; i < vp; i++)
 		{
 			if (select[i])
