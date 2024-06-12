@@ -1,4 +1,3 @@
-
 /*
  알고리즘 캠프에 사용할 문제 고르기
  문제 n개, i번째 문제의 난이도는 a[i]
@@ -14,6 +13,9 @@ int a[15 + 5];
 int select[15 + 5];
 int visited[15 + 5];
 int sol = 0;
+
+int compare(const void* a, const void* b) { return (*(int*)a - *(int*)b); }
+
 void inputData(void)
 {
 	scanf("%d %d %d %d", &n, &l, &r, &x);
@@ -22,7 +24,6 @@ void inputData(void)
 // 1) 선택한 문제들이 적절한지 판단하는 함수. 이건 매번 Return 할 때 마다 확인
 int isTrue(int cnt)
 {
-	if (x > select[0] + select[cnt - 1]) return 0;
 	int flag = 1;
 	int sum = 0;
 	for (int i = 0; i < cnt; i++) sum += select[i];
@@ -35,11 +36,24 @@ int isTrue(int cnt)
 */
 void dfs(int cnt)
 {
-	if (isTrue(cnt)) sol++;
+	if (cnt > 1)
+	{
+		if (select[cnt-1] - select[0] < x && isTrue(cnt)) sol++;
+		return;
+	}
+	for (int i = 0; i < n; i++)
+	{
+		if (visited[i]) continue;
+		visited[i] = 1;
+		select[cnt] = a[i];
+		visited[i] = 0;
+	}
 }
 int main(void)
 {
 	inputData();
 	// 구현
+	qsort(a, n, sizeof(int), compare);
+	dfs(0);
 	return 0;
 }
