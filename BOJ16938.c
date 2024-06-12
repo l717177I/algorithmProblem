@@ -22,6 +22,12 @@ void inputData(void)
 	for (int i = 0; i < n; i++) scanf("%d", &a[i]);
 }
 // 1) 선택한 문제들이 적절한지 판단하는 함수. 이건 매번 Return 할 때 마다 확인
+
+void debug(int x)
+{
+	for (int i = 0; i < x; i++) printf("%d ", select[i]);
+	printf("\n");
+}
 int isTrue(int cnt)
 {
 	int flag = 1;
@@ -34,11 +40,29 @@ int isTrue(int cnt)
 /*
  가지치기 생각하자 가지치기
 */
+
+void select_one(void)
+{
+	for (int i = 0; i < n; i++)
+	{
+		if (a[i] >= x)
+		{
+			if (a[i] >= l && a[i] <= r) sol++;
+		}
+	}
+}
 void dfs(int cnt)
 {
-	if (cnt > 1)
+	if (cnt > 0)
 	{
-		if (select[cnt-1] - select[0] < x && isTrue(cnt)) sol++;
+		int tmp;
+		// if (cnt == 1) tmp = select[];
+		// else tmp = select[cnt - 1] - select[0];
+		if (x <= tmp && isTrue(cnt))
+		{
+			//debug(cnt);
+			sol++;
+		}
 		return;
 	}
 	for (int i = 0; i < n; i++)
@@ -46,6 +70,7 @@ void dfs(int cnt)
 		if (visited[i]) continue;
 		visited[i] = 1;
 		select[cnt] = a[i];
+		dfs(cnt + 1);
 		visited[i] = 0;
 	}
 }
@@ -55,5 +80,6 @@ int main(void)
 	// 구현
 	qsort(a, n, sizeof(int), compare);
 	dfs(0);
+	printf("%d\n", sol);
 	return 0;
 }
