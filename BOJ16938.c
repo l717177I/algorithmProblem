@@ -10,8 +10,6 @@
 #include <stdlib.h>
 int n, l, r, x;
 int a[15 + 5];
-int select[15 + 5];
-int visited[15 + 5];
 int sol = 0;
 
 int compare(const void* a, const void* b) { return (*(int*)a - *(int*)b); }
@@ -21,65 +19,31 @@ void inputData(void)
 	scanf("%d %d %d %d", &n, &l, &r, &x);
 	for (int i = 0; i < n; i++) scanf("%d", &a[i]);
 }
-// 1) 선택한 문제들이 적절한지 판단하는 함수. 이건 매번 Return 할 때 마다 확인
+// 1) 선택한 문제들이 적절한지 확인
+int isTrue(int sum, int max, int min)
+{
+	if ((sum >= l && sum <= r) && x <= max - min) return 1;
+	return 0;
+}
+// 2) max-min 유효성 체크, 선택한 문제 합의 유효성 확인
+void dfs(int start, int cnt, int sum, int max, int min)
+{
+	if (cnt > 1 && isTrue(sum, max, min)) sol++;
+	if (sum > r) return;
+	for (int i = start; i < n; i++)
+	{
+		int nmax = max > a[i] ? max : a[i];
+		int nmin = min < a[i] ? min : a[i];
+		choose[cnt] = a[i];
+		dfs(i + 1, cnt + 1, sum + a[i], nmax, nmin);
+	}
+}
 
-void debug(int x)
-{
-	for (int i = 0; i < x; i++) printf("%d ", select[i]);
-	printf("\n");
-}
-int isTrue(int cnt)
-{
-	int flag = 1;
-	int sum = 0;
-	for (int i = 0; i < cnt; i++) sum += select[i];
-	if (sum < l || sum > r) flag = 0;
-	return flag;
-}
-// 2) 문제를 고르는 경우의 수. 사용했던걸 다시 재사용해도 된다면 순열로 구현하자
-/*
- 가지치기 생각하자 가지치기
-*/
-
-void select_one(void)
-{
-	for (int i = 0; i < n; i++)
-	{
-		if (a[i] >= x)
-		{
-			if (a[i] >= l && a[i] <= r) sol++;
-		}
-	}
-}
-void dfs(int cnt)
-{
-	if (cnt > 0)
-	{
-		int tmp;
-		// if (cnt == 1) tmp = select[];
-		// else tmp = select[cnt - 1] - select[0];
-		if (x <= tmp && isTrue(cnt))
-		{
-			//debug(cnt);
-			sol++;
-		}
-		return;
-	}
-	for (int i = 0; i < n; i++)
-	{
-		if (visited[i]) continue;
-		visited[i] = 1;
-		select[cnt] = a[i];
-		dfs(cnt + 1);
-		visited[i] = 0;
-	}
-}
 int main(void)
 {
 	inputData();
-	// 구현
 	qsort(a, n, sizeof(int), compare);
-	dfs(0);
+    	dfs(0, 0, 0, -1, 1e9);    // start, cnt, sum, max, min
 	printf("%d\n", sol);
 	return 0;
 }
